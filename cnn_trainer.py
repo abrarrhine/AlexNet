@@ -38,7 +38,7 @@ class PACSDataset(Dataset):
 
   def __init__(self,
                root_dir,
-               label_type='domain',
+               label_type='category',
                is_training=False,
                transform=None):
     self.root_dir = os.path.join(root_dir, 'train' if is_training else 'val')
@@ -303,8 +303,8 @@ def model_training():
 
   ############################################################################
   """After implementing all required models, you can switch from here."""
-  # model = AlexNet(configs).to(device)
-  model = AlexNetLargeKernel(configs).to(device)
+  model = AlexNet(configs).to(device)
+  # model = AlexNetLargeKernel(configs).to(device)
   # model = AlexNetAvgPooling(configs).to(device)
   ############################################################################
 
