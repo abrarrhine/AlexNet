@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_enum('task_type', 'training', ['training', 'analysis'],
+flags.DEFINE_enum('task_type', 'analysis', ['training', 'analysis'],
                   'Specifies the task type.')
 
 # Hyperparameters for Part I
@@ -215,23 +215,14 @@ def visualize_kernels(kernel_name,
                       max_in_channels=12,
                       max_out_channels=12,
                       saving_prefix='kernel'):
-  """A helper function to visualize the learned convolutional kernels.
-  
-  Args:
-    kernel_name: str, the name of the kernel being visualized. It will be used
-        as the filename in the saved figures.
-    kernel_weight: torch.Tensor or np.ndarray, the weights of convolutional
-        kernel. The shape should be
-        [out_channels, in_channels, kernel_height, kernel_width].
-    max_in_channels: int, optional, the max in_channels in the visualization.
-    max_out_channels: int, optional, the max out_channels in the visualization.
-    saving_prefix: str, optional, the directory for saving the visualization.
-  """
   print('Visualize the learned filter of `%s`' % kernel_name)
   if isinstance(kernel_weight, torch.Tensor):
     kernel_weight = kernel_weight.cpu().numpy()
 
   kernel_shape = list(kernel_weight.shape)
+  saving_prefix = 'kernel'
+  if not os.path.exists(saving_prefix):
+    os.makedirs(saving_prefix)
 
   nrows = min(max_in_channels, kernel_shape[1])
   ncols = min(max_out_channels, kernel_shape[0])
@@ -259,7 +250,7 @@ def visualize_kernels(kernel_name,
 
 
 def analyze_model_kernels():
-  chkpoint = torch.load(FLAGS.model_checkpoint) 
+  chkpoint = torch.load('/content/gdrive/MyDrive/CS5814/experiments/demo/domain_lr_0.001.wd_0.0/best_model.pt') 
   """
   chkpoint is an ordered dict where each feature layer is titled 'features.n.weight' 
   """
